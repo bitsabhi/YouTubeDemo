@@ -18,12 +18,12 @@ public class YouTubeMain {
 
 		YouTubeMain youTubeMain = new YouTubeMain();
 
-		String query = youTubeMain.getInput();
+		String query = youTubeMain.getInput().trim();
 
 		String response = youTubeMain.makeAPICall(query);
 
 		try {
-			youTubeMain.parseAndPrintResponse(response);
+			youTubeMain.parseResponseAndPrint(response);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -39,7 +39,9 @@ public class YouTubeMain {
 	}	
 
 	private   String makeAPICall(String query) {
-		String url = mBaseApi + "?q=" + query + "&part=snippet&type=video&key="+ mAPIKey + "&max-results=10&order=viewCount";
+		// Sorted by view count
+		String url = mBaseApi + "?q=" + query + "&part=snippet&type=song&key="+ mAPIKey + "&max-results=10&order=viewCount";
+		System.out.println(url);
 		try {
 			String response  = HttpHelper.doGet(url);
 			return response;
@@ -52,7 +54,7 @@ public class YouTubeMain {
 
 	}
 
-	private  void parseAndPrintResponse(String response) throws JSONException {
+	private  void parseResponseAndPrint(String response) throws JSONException {
 		JSONObject json = new JSONObject(response);
 
 		JSONArray items = json.getJSONArray("items");  
